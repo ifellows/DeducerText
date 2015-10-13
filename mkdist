@@ -1,0 +1,24 @@
+#!/bin/sh
+mkdir tmp
+cp -r DeducerText tmp
+
+javac -target 1.5 -source 1.5 -d . -classpath org/JavaGD.jar:org/JRI.jar:org/JGR.jar:org/deducer.jar: edu/cens/text/*.java
+jar fc text.jar edu/cens/text/*.class
+mv text.jar tmp/DeducerText/inst/java/text.jar
+rm edu/cens/text/*.class 
+cp -r edu tmp/DeducerText/java
+
+cd tmp/DeducerText
+VER=`sed -n 's/^Version:.\([0-9.-]\{1,\}\).*/\1/p' DESCRIPTION`
+cd ..
+
+if [ -z "$VER" ]; then
+    echo "ERROR: invalid version in DESCRIPTION"
+    exit 1
+fi
+
+cd ..
+R CMD build DeducerText
+cp tmp/DeducerText_${VER}.tar.gz .
+
+rm -rf tmp

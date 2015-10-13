@@ -1,0 +1,7 @@
+exportPattern("[[:alpha:]]+")
+import(Deducer)
+import(tm)
+import(wordcloud)
+import(RColorBrewer)
+import(SnowballC)
+import(rJava)
